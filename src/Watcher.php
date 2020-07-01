@@ -194,8 +194,9 @@ class Watcher
 
     public function restart($isStart = true)
     {
-        if (! $isStart) {
-            $pid = $this->filesystem->get(BASE_PATH . '/runtime/hyperf.pid');
+        $file = BASE_PATH . '/runtime/hyperf.pid';
+        if (! $isStart && $this->filesystem->exists($file)) {
+            $pid = $this->filesystem->get($file);
             try {
                 $this->output->writeln('Stop server...');
                 Process::kill((int) $pid, SIGTERM);
@@ -211,7 +212,7 @@ class Watcher
             if ($ret['code']) {
                 throw new \RuntimeException($ret['output']);
             }
-            $this->output->writeln('Stop server success');
+            $this->output->writeln('Start server success');
             $this->channel->push($ret);
         });
     }

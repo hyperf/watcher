@@ -46,6 +46,11 @@ class Option
      */
     protected $scanInterval = 2000;
 
+    /**
+     * @var int
+     */
+    protected $watchMode = ScanFileDriver::SHELL_MODE;
+
     public function __construct(ConfigInterface $config, array $dir, array $file)
     {
         $options = $config->get('watcher', []);
@@ -55,6 +60,7 @@ class Option
         isset($options['watch']['dir']) && $this->watchDir = (array) $options['watch']['dir'];
         isset($options['watch']['file']) && $this->watchFile = (array) $options['watch']['file'];
         isset($options['watch']['scan_interval']) && $this->scanInterval = (int) $options['watch']['scan_interval'];
+        isset($options['watch']['mode']) && $this->watchMode = (int) $options['watch']['mode'];
         isset($options['ext']) && $this->ext = (array) $options['ext'];
 
         $this->watchDir = array_unique(array_merge($this->watchDir, $dir));
@@ -89,5 +95,10 @@ class Option
     public function getScanInterval()
     {
         return $this->scanInterval;
+    }
+
+    public function getWatchModel()
+    {
+        return $this->watchMode;
     }
 }
